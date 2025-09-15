@@ -3,109 +3,343 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>영구보존문서 도우미 — 가격 안내</title>
+  <title>영구보존문서 도우미 — 프로 가격 정책</title>
   <style>
     :root{
-      --bg:#0b1020; --card:#11162a; --muted:#9aa3b2; --fg:#f6f8ff;
-      --accent:#2b79ff; --ring:rgba(43,121,255,.35); --br:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --bg: #0b1020;         /* 배경(다크) */
+      --card: #11162a;       /* 카드 배경(다크) */
+      --muted: #9aa3b2;
+      --fg: #f6f8ff;
+      --accent: #2b79ff;
+      --ok: #24c38f;
+      --warn:#f7b955;
+      --danger:#ff6b6b;
+      --ring: rgba(43,121,255,.35);
+      --br: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
     }
+    /* 라이트 모드 자동 전환 */
     @media (prefers-color-scheme: light){
-      :root{ --bg:#f6f8ff; --card:#fff; --muted:#6b7280; --fg:#0b1220; --shadow:0 12px 30px rgba(14,20,45,.08); }
-      body{ background: linear-gradient(180deg,#eef3ff,#fff) fixed; }
+      :root{
+        --bg: #f6f8ff;
+        --card: #ffffff;
+        --muted: #6b7280;
+        --fg: #0b1220;
+        --shadow: 0 12px 30px rgba(14,20,45,.08);
+      }
+      body{ background: linear-gradient(180deg, #eef3ff, #fff) fixed; }
     }
-    *{box-sizing:border-box}
-    body{margin:0; color:var(--fg); background:var(--bg); font-family:"Segoe UI","Apple SD Gothic Neo","Noto Sans KR",system-ui,-apple-system,sans-serif;}
-    .wrap{max-width:980px; margin:0 auto; padding:24px 16px 80px;}
-    .header{display:flex; align-items:center; gap:12px; margin:4px 0 18px;}
-    .logo{width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,var(--accent),#7aa6ff); display:grid; place-items:center; color:#fff; font-weight:800; box-shadow:var(--shadow);}
-    .title{font-size:20px; font-weight:800;}
-    .subtitle{font-size:13px; color:var(--muted)}
-    .hero{border-radius:var(--br); background:var(--card); padding:22px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; box-shadow:var(--shadow);}
-    .hero h1{margin:0 0 6px; font-size:28px}
-    .hero p{margin:0; color:var(--muted)}
-    .card{background:var(--card); border-radius:var(--br); box-shadow:var(--shadow); padding:20px; position:relative; border:1px solid rgba(127,146,176,.18); display:flex; flex-direction:column; gap:12px; margin-top:16px;}
-    .badge{position:absolute; top:12px; right:12px; font-size:12px; font-weight:800; padding:6px 10px; border-radius:999px; background:rgba(36,195,143,.15); color:#24c38f; border:1px solid rgba(36,195,143,.4);}
-    .plan-name{font-weight:800; font-size:18px;}
-    .desc{color:var(--muted); font-size:13px; line-height:1.4;}
-    .price{display:flex; align-items:flex-end; gap:8px;}
-    .price .num{font-size:36px; font-weight:900;}
-    .price .unit{color:var(--muted); margin-bottom:6px;}
-    .feature{display:flex; align-items:center; gap:10px; font-size:14px; color:#dfe6f6;}
-    .ok{width:10px; height:10px; border-radius:50%; background:#24c38f; box-shadow:0 0 0 3px rgba(36,195,143,.12); flex:none;}
-    .cta{display:flex; gap:10px; margin-top:6px;}
-    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 14px; border-radius:12px; border:1px solid rgba(127,146,176,.25); background:transparent; color:var(--fg); cursor:pointer; font-weight:800; letter-spacing:.2px; text-decoration:none;}
-    .btn:hover{box-shadow:0 10px 18px rgba(0,0,0,.18)}
-    .btn:focus{outline:2px solid var(--ring); outline-offset:2px}
-    .btn.kakao{background:#fee500; color:#191600; border-color:#fee500;}
-    .footer{margin-top:28px; color:var(--muted); font-size:12px; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between;}
-    .kbd{font-family:ui-monospace,Menlo,monospace; background:rgba(127,146,176,.15); padding:2px 6px; border-radius:6px; border:1px solid rgba(127,146,176,.25);}
+
+    * { box-sizing: border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0; font-family: "Segoe UI","Apple SD Gothic Neo","Noto Sans KR",system-ui, -apple-system, sans-serif;
+      color: var(--fg); background: var(--bg);
+    }
+    a{ color: inherit; text-decoration: none; }
+    .wrap{ max-width: 1080px; margin: 0 auto; padding: 24px 16px 80px; }
+
+    /* 헤더 */
+    .header{
+      display:flex; align-items:center; gap:12px; margin: 4px 0 18px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px; background: linear-gradient(135deg, var(--accent), #7aa6ff);
+      display:grid; place-items:center; color:white; font-weight:800; box-shadow: var(--shadow);
+    }
+    .titlebox{ display:flex; flex-direction: column; }
+    .title{ font-size: 20px; font-weight: 800; letter-spacing:.2px; }
+    .subtitle{ font-size: 13px; color: var(--muted); }
+
+    /* 히어로 */
+    .hero{
+      border-radius: var(--br); background: var(--card); padding: 22px;
+      display:flex; flex-wrap: wrap; gap:16px; align-items:center; justify-content:space-between;
+      box-shadow: var(--shadow);
+    }
+    .hero h1{ font-size: 28px; margin: 0 0 6px; }
+    .hero p{ margin:0; color: var(--muted); }
+
+    /* 토글 */
+    .toggle{
+      display:flex; align-items:center; gap:10px; background: rgba(127,146,176,.12);
+      border-radius: 999px; padding: 6px; position: relative;
+    }
+    .toggle button{
+      border:0; background: transparent; color: var(--muted);
+      padding:10px 14px; border-radius: 999px; cursor:pointer; font-weight:700;
+    }
+    .toggle button.active{ background: var(--fg); color: var(--bg); box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+
+    /* 가격 카드들 */
+    .grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:16px;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 680px){ .grid{ grid-template-columns: 1fr; } }
+
+    .card{
+      background: var(--card); border-radius: var(--br); box-shadow: var(--shadow);
+      padding: 20px; position: relative; border:1px solid rgba(127,146,176,.18);
+      display:flex; flex-direction: column; gap:12px;
+    }
+    .badge{
+      position:absolute; top:12px; right:12px; font-size:12px; font-weight:800; letter-spacing:.2px;
+      padding:6px 10px; border-radius: 999px; background: rgba(43,121,255,.14); color: var(--accent); border:1px solid rgba(43,121,255,.35);
+    }
+    .plan-name{ font-weight: 800; font-size: 18px; letter-spacing:.2px; }
+    .desc{ color: var(--muted); font-size: 13px; line-height: 1.4; }
+
+    .price{
+      display:flex; align-items:flex-end; gap:8px;
+    }
+    .price .num{ font-size: 36px; font-weight: 900; }
+    .price .unit{ color: var(--muted); margin-bottom: 6px; }
+
+    .feature{
+      display:flex; align-items: center; gap:10px; font-size: 14px; color: #dfe6f6;
+    }
+    .feature small{ color: var(--muted); }
+    .ok{ width:10px; height:10px; border-radius:50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(36,195,143,.12); flex: none; }
+    .warn{ width:10px; height:10px; border-radius:50%; background: var(--warn); box-shadow: 0 0 0 3px rgba(247,185,85,.12); flex: none; }
+    .no{ width:10px; height:10px; border-radius:50%; background: var(--danger); box-shadow: 0 0 0 3px rgba(255,107,107,.12); flex: none; }
+
+    .cta{
+      display:flex; gap:10px; margin-top: 6px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding: 12px 14px; border-radius: 12px; border:1px solid rgba(127,146,176,.25);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0));
+      color: var(--fg); cursor:pointer; font-weight:800; letter-spacing:.2px;
+      transition: transform .08s ease, box-shadow .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 18px rgba(0,0,0,.18); }
+    .btn:focus{ outline:2px solid var(--ring); outline-offset:2px; }
+    .btn.primary{ background: linear-gradient(180deg, var(--accent), #1b58c4); border-color: transparent; color: #fff; }
+    .btn.ghost{ background: transparent; }
+
+    /* 비교표 */
+    .table{
+      margin-top: 28px; overflow-x:auto; background: var(--card); border-radius: var(--br); box-shadow: var(--shadow);
+      border:1px solid rgba(127,146,176,.18);
+    }
+    table{ width:100%; border-collapse: collapse; min-width: 720px; }
+    th, td{ text-align:left; padding: 14px 16px; border-bottom:1px dashed rgba(127,146,176,.2); }
+    th{ font-size:13px; color: var(--muted); font-weight:700; }
+    td{ font-size:14px; }
+    tr:last-child td{ border-bottom: none; }
+
+    /* FAQ */
+    .faq{ margin-top: 26px; display:grid; gap:10px; }
+    details{
+      background: var(--card); border-radius: 12px; padding: 14px 16px; border:1px solid rgba(127,146,176,.18); box-shadow: var(--shadow);
+    }
+    summary{ cursor: pointer; font-weight: 800; }
+    details p{ color: var(--muted); margin: 10px 2px 2px; line-height: 1.55; }
+
+    /* 푸터 */
+    .footer{
+      margin-top: 28px; color: var(--muted); font-size: 12px; line-height: 1.55;
+      display:flex; flex-wrap:wrap; gap:8px; justify-content: space-between;
+    }
+    .kbd{ font-family: ui-monospace, Menlo, monospace; background: rgba(127,146,176,.15); padding: 2px 6px; border-radius: 6px; border:1px solid rgba(127,146,176,.25); }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px; padding: 6px 10px; border-radius: 999px; background: rgba(127,146,176,.12);
+      border:1px solid rgba(127,146,176,.25);
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <!-- 헤더 -->
-    <div class="header" role="banner">
+    <div class="header" role="banner" aria-label="앱 헤더">
       <div class="logo" aria-hidden="true">PR</div>
-      <div>
-        <div class="title">영구보존문서 등록 도우미 — 가격 안내</div>
-        <div class="subtitle">필요한 기간만 결제 부담 없이 사용하세요.</div>
+      <div class="titlebox">
+        <div class="title">영구보존문서 등록 도우미 — PRO</div>
+        <div class="subtitle">대량 업로드·자동화·우선 지원으로 시간을 절약하세요.</div>
       </div>
     </div>
 
     <!-- 히어로 -->
     <section class="hero">
       <div>
-        <h1>단일 플랜</h1>
-        <p>모든 기능을 동일하게 제공합니다.</p>
+        <h1>가격 정책</h1>
+        <p>필요한 기간만 결제해 부담 없이 사용하세요. 모든 플랜은 동일한 기능을 제공합니다.</p>
+      </div>
+      <!-- 월/연 토글 (표시용) -->
+      <div class="toggle" role="tablist" aria-label="과금 주기 전환">
+        <button id="btn-monthly" class="active" role="tab" aria-selected="true">30일</button>
+        <button id="btn-yearly" role="tab" aria-selected="false">1년</button>
       </div>
     </section>
 
-    <!-- 단일 플랜 카드 (90일만 유지) -->
-    <article class="card" aria-label="90일 플랜">
-      <span class="badge">추천</span>
-      <div class="plan-name">90일 플랜</div>
-      <div class="desc">분기 단위 프로젝트 운영에 적합</div>
-      <div class="price">
-        <div class="num">135,000</div><div class="unit">원 / 90일</div>
-      </div>
+    <!-- 가격 카드 -->
+    <section class="grid" aria-label="요금제 선택">
+      <!-- 30일 플랜 -->
+      <article class="card" data-plan="monthly" tabindex="0" aria-label="30일 플랜">
+        <span class="badge">가장 가볍게</span>
+        <div class="plan-name">30일 플랜</div>
+        <div class="desc">한 달만 빠르게 처리해야 할 때 적합</div>
+        <div class="price">
+          <div class="num" data-price="50000">50,000</div><div class="unit">원 / 30일</div>
+        </div>
+        <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
+        <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
+        <div class="feature"><span class="ok"></span> 기술지원 (영업일 24시간 내 1차 회신)</div>
+        <div class="feature"><span class="warn"></span> 라이선스 1대(추가는 문의)</div>
+        <div class="cta">
+          <button class="btn primary" data-action="checkout" data-sku="PRO-30D">결제하기</button>
+          <button class="btn ghost" data-action="contact">문의</button>
+        </div>
+      </article>
 
-      <!-- 기능 설명에서 '기술지원 응답 시간', '사용 가능 기기 수', '라이선스 동시 사용' 문구 제거 -->
-      <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
-      <div class="feature"><span class="ok"></span> 자동 재시작 / 에러 복구</div>
+      <!-- 90일 플랜(선택) -->
+      <article class="card" data-plan="quarterly" tabindex="0" aria-label="90일 플랜(선택)">
+        <span class="badge" style="background: rgba(36,195,143,.15); color: var(--ok); border-color: rgba(36,195,143,.4);">추천</span>
+        <div class="plan-name">90일 플랜</div>
+        <div class="desc">분기 단위 프로젝트 운영에 적합</div>
+        <div class="price">
+          <div class="num" data-price="135000">135,000</div><div class="unit">원 / 90일</div>
+        </div>
+        <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
+        <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
+        <div class="feature"><span class="ok"></span> 우선 기술지원 (영업일 12시간 내 1차 회신)</div>
+        <div class="feature"><span class="ok"></span> 라이선스 2대(동시 미허용)</div>
+        <div class="cta">
+          <button class="btn primary" data-action="checkout" data-sku="PRO-90D">결제하기</button>
+          <button class="btn ghost" data-action="contact">문의</button>
+        </div>
+      </article>
 
-      <div class="cta">
-        <!-- 결제하기 버튼 삭제, 문의 버튼만 유지하고 카카오톡 채널로 연결 -->
-        <a class="btn kakao" href="KAKAO_CHANNEL_URL" target="_blank" rel="noopener">카카오톡으로 문의하기</a>
-      </div>
-    </article>
+      <!-- 1년 플랜 -->
+      <article class="card" data-plan="yearly" tabindex="0" aria-label="1년 플랜">
+        <span class="badge" style="background: rgba(43,121,255,.18); color:#fff; border-color: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);">베스트</span>
+        <div class="plan-name">1년 플랜</div>
+        <div class="desc">상시 운영 환경에 최적, 월 환산 시 가장 저렴</div>
+        <div class="price">
+          <div class="num" data-price="300000">300,000</div><div class="unit">원 / 1년</div>
+        </div>
+        <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
+        <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
+        <div class="feature"><span class="ok"></span> 최우선 기술지원 (영업일 4시간 내 1차 회신)</div>
+        <div class="feature"><span class="ok"></span> 라이선스 3대(동시 미허용)</div>
+        <div class="cta">
+          <button class="btn primary" data-action="checkout" data-sku="PRO-1Y">결제하기</button>
+          <button class="btn ghost" data-action="contact">문의</button>
+        </div>
+      </article>
+    </section>
 
-    <!-- FAQ(선택): 기능/라이선스 응답시간 관련 항목은 제거 -->
-    <section style="margin-top:20px;">
+    <!-- 비교표 -->
+    <div class="table" role="region" aria-label="기능 비교표">
+      <table aria-describedby="compare-caption">
+        <caption id="compare-caption" style="display:none;">플랜 간 제공 기능 비교 표</caption>
+        <thead>
+          <tr>
+            <th>기능</th>
+            <th>30일</th>
+            <th>90일</th>
+            <th>1년</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>대량 처리 제한 해제</td>
+            <td>포함</td><td>포함</td><td>포함</td>
+          </tr>
+          <tr>
+            <td>자동 재시작/에러 복구</td>
+            <td>포함</td><td>포함</td><td>포함</td>
+          </tr>
+          <tr>
+            <td>기술지원 응답 시간(영업일)</td>
+            <td>24시간 이내</td><td>12시간 이내</td><td>4시간 이내</td>
+          </tr>
+          <tr>
+            <td>사용 가능 기기 수</td>
+            <td>1대</td><td>2대</td><td>3대</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq" aria-label="자주 묻는 질문">
       <details>
-        <summary>부가가치세(VAT)는 포함인가요?</summary>
-        <p>표시 가격은 부가세 <strong>별도</strong> 금액입니다. 세금계산서 발행이 필요하시면 결제 후 사업자 정보를 전달해 주세요.</p>
+        <summary>부가가치세( VAT )는 포함인가요?</summary>
+        <p>표시 가격은 부가세 <strong>별도</strong> 금액입니다. 세금계산서가 필요한 경우 결제 후 사업자정보를 전달해 주세요.</p>
       </details>
       <details>
         <summary>환불 규정은 어떻게 되나요?</summary>
         <p>미사용(활성화 전) 상태에서는 결제일로부터 7일 이내 전액 환불됩니다. 활성화 후에는 남은 기간에 따라 일할 차감 후 환불됩니다.</p>
       </details>
+      <details>
+        <summary>플랜 변경(업/다운그레이드)이 가능한가요?</summary>
+        <p>가능합니다. 남은 기간을 일할 계산하여 차액 결제/환불 처리합니다.</p>
+      </details>
+      <details>
+        <summary>라이선스는 동시 사용이 가능한가요?</summary>
+        <p>표준 라이선스는 <strong>동시 사용 불가</strong>이며, 등록 기기 대수만큼 설치가 허용됩니다. 동시 사용이 필요한 경우 기업 계약으로 문의 주세요.</p>
+      </details>
     </section>
 
     <!-- 푸터 -->
     <footer class="footer">
-      <div>문의: <span class="kbd">help@yourdomain.kr</span> · <span class="kbd">070-0000-0000</span></div>
+      <div class="pill">문의: <span class="kbd">help@yourdomain.kr</span> · <span class="kbd">070-0000-0000</span></div>
       <div>ⓒ 2025 Your Company. 모든 권리 보유. | 약관 · 개인정보처리방침</div>
     </footer>
   </div>
 
   <script>
-    // 여기에 너의 카카오톡 채널/오픈채팅 URL을 넣어줘.
-    // 예: const KAKAO = "https://pf.kakao.com/_abcdE";   (카카오 채널)
-    //  또는 const KAKAO = "https://open.kakao.com/o/xxxxxx"; (오픈채팅)
-    const KAKAO = "KAKAO_CHANNEL_URL";
+    // 가격 표시 보존(쉼표 포함)
+    const krw = n => n.toLocaleString('ko-KR');
 
-    // a[href="KAKAO_CHANNEL_URL"] 자리 자동 치환
-    document.querySelectorAll('a[href="KAKAO_CHANNEL_URL"]').forEach(a => a.href = KAKAO);
+    // 월/연 토글은 "표시 용도" — 실제 가격 값은 data-price 기준
+    const btnMonthly = document.getElementById('btn-monthly');
+    const btnYearly  = document.getElementById('btn-yearly');
+
+    const setActive = (target) => {
+      [btnMonthly, btnYearly].forEach(b=>{
+        b.classList.toggle('active', b === target);
+        b.setAttribute('aria-selected', b === target ? 'true' : 'false');
+      });
+    };
+
+    btnMonthly.addEventListener('click', ()=>{
+      setActive(btnMonthly);
+      // 필요 시 월 기준 강조 로직 추가 가능
+    });
+    btnYearly.addEventListener('click', ()=>{
+      setActive(btnYearly);
+      // 필요 시 연 기준 강조 로직 추가 가능
+    });
+
+    // 결제/문의 버튼 클릭 (여기서 PG사/결제 링크로 보내면 됨)
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+
+      // 결제
+      if(btn.dataset.action === 'checkout'){
+        const sku = btn.dataset.sku; // PRO-30D | PRO-90D | PRO-1Y
+        const card = btn.closest('.card');
+        const planName = card?.querySelector('.plan-name')?.textContent?.trim();
+        const amount = card?.querySelector('.num')?.dataset?.price;
+
+        // TODO: 결제 링크 연결
+        // 예) location.href = `/checkout?sku=${encodeURIComponent(sku)}`;
+        console.log('[CHECKOUT]', { sku, planName, amount });
+        alert(`${planName} 결제 페이지로 이동합니다.\n금액: ${krw(Number(amount))}원`);
+      }
+
+      // 문의
+      if(btn.dataset.action === 'contact'){
+        // TODO: 실제 문의 채널 연결 (카카오채널, 이메일 등)
+        console.log('[CONTACT] open');
+        alert('문의 채널로 이동합니다. (카카오채널/이메일 등 연결 예정)');
+      }
+    });
   </script>
 </body>
 </html>
