@@ -5,20 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>영구보존문서 도우미 — 프로 가격 정책</title>
   <style>
+    /* ===== 색상 토큰 ===== */
     :root{
       --bg:#0b1020; --card:#11162a; --muted:#9aa3b2; --fg:#f6f8ff;
-      --accent:#2b79ff; --ok:#24c38f; --warn:#f7b955; --danger:#ff6b6b;
-      --ring:rgba(43,121,255,.35); --br:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --fg-strong:#eaf0ff;             /* 본문 대비 강화 */
+      --accent:#2b79ff; --accent-2:#7a5cff;
+      --ok:#1fc08f; --ring:rgba(43,121,255,.35);
+      --br:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
+      --kakao:#fee500; --kakao-fg:#191600;
     }
+    /* 라이트 모드에서 가독성 극대화 */
     @media (prefers-color-scheme: light){
-      :root{ --bg:#f6f8ff; --card:#ffffff; --muted:#6b7280; --fg:#0b1220; --shadow:0 12px 30px rgba(14,20,45,.08); }
+      :root{
+        --bg:#f5f7ff; --card:#ffffff; --muted:#576072; --fg:#0b1220; --fg-strong:#0b1220;
+        --shadow:0 12px 30px rgba(14,20,45,.08);
+      }
       body{ background: linear-gradient(180deg,#eef3ff,#fff) fixed; }
     }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0; font-family:"Segoe UI","Apple SD Gothic Neo","Noto Sans KR",system-ui,-apple-system,sans-serif;
       color:var(--fg); background:var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
     a{ color:inherit; text-decoration:none; }
     .wrap{ max-width:1080px; margin:0 auto; padding:24px 16px 80px; }
@@ -27,74 +37,83 @@
     .header{ display:flex; align-items:center; gap:12px; margin:4px 0 18px; }
     .logo{ width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,var(--accent),#7aa6ff); display:grid; place-items:center; color:#fff; font-weight:800; box-shadow:var(--shadow); }
     .titlebox{ display:flex; flex-direction:column; }
-    .title{ font-size:20px; font-weight:800; letter-spacing:.2px; }
-    .subtitle{ font-size:13px; color:var(--muted); }
+    .title{ font-size:22px; font-weight:900; letter-spacing:.2px; color:var(--fg-strong); }
+    .subtitle{ font-size:14px; color:var(--muted) }
 
     /* 히어로 */
     .hero{
-      border-radius:var(--br); background:var(--card); padding:22px;
+      border-radius:var(--br); background:var(--card); padding:24px 22px;
       display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow); border:1px solid rgba(127,146,176,.18);
     }
-    .hero h1{ font-size:28px; margin:0 0 6px; }
-    .hero p{ margin:0; color:var(--muted); }
+    .hero h1{ font-size:30px; margin:0 0 8px; color:var(--fg-strong); letter-spacing:.2px; }
+    .hero p{ margin:0; color:var(--muted); font-size:15px; line-height:1.6; }
 
-    /* 카드 그리드 */
-    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
+    /* 그리드 */
+    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:18px; }
     @media (max-width:980px){ .grid{ grid-template-columns:1fr 1fr; } }
     @media (max-width:680px){ .grid{ grid-template-columns:1fr; } }
 
+    /* 카드 */
     .card{
-      background:var(--card); border-radius:var(--br); box-shadow:var(--shadow);
-      padding:20px; position:relative; border:1px solid rgba(127,146,176,.18);
+      background:var(--card); border-radius:20px; box-shadow:var(--shadow);
+      padding:22px; position:relative; border:1px solid rgba(127,146,176,.18);
       display:flex; flex-direction:column; gap:12px;
     }
     .badge{
-      position:absolute; top:12px; right:12px; font-size:12px; font-weight:800; letter-spacing:.2px;
-      padding:6px 10px; border-radius:999px; background:rgba(43,121,255,.14); color:var(--accent); border:1px solid rgba(43,121,255,.35);
+      position:absolute; top:12px; right:12px; font-size:12px; font-weight:900; letter-spacing:.3px;
+      padding:7px 11px; border-radius:999px; color:var(--accent); background:rgba(43,121,255,.14);
+      border:1px solid rgba(43,121,255,.35);
     }
-    .plan-name{ font-weight:800; font-size:18px; letter-spacing:.2px; }
-    .desc{ color:var(--muted); font-size:13px; line-height:1.4; }
+    /* 1년 플랜: 베스트 배지 눈에 띄게 */
+    .card[data-plan="yearly"] .badge{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#fff; border:none;
+      box-shadow:0 8px 20px rgba(43,121,255,.45), inset 0 0 0 1px rgba(255,255,255,.18);
+    }
 
-    .price{ display:flex; align-items:flex-end; gap:8px; }
-    .price .num{ font-size:36px; font-weight:900; }
-    .price .unit{ color:var(--muted); margin-bottom:6px; }
+    .plan-name{ font-weight:900; font-size:19px; letter-spacing:.2px; color:var(--fg-strong); }
+    .desc{ color:var(--muted); font-size:14px; line-height:1.55; }
 
-    .feature{ display:flex; align-items:center; gap:10px; font-size:14px; color:#dfe6f6; }
+    .price{ display:flex; align-items:baseline; gap:10px; margin-top:2px; }
+    .price .num{ font-size:40px; font-weight:900; letter-spacing:.3px; color:var(--fg-strong); }
+    .price .unit{ color:var(--muted); font-size:15px; }
+
+    .feature{ display:flex; align-items:center; gap:10px; font-size:15px; color:var(--fg-strong); }
     .ok{ width:10px; height:10px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 3px rgba(36,195,143,.12); flex:none; }
 
-    .cta{ display:flex; gap:10px; margin-top:6px; }
+    .cta{ display:flex; gap:10px; margin-top:10px; }
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:14px 16px; border-radius:14px; border:1px solid rgba(127,146,176,.25);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0));
-      color:var(--fg); cursor:pointer; font-weight:900; letter-spacing:.2px;
+      padding:16px 18px; border-radius:14px; border:1px solid rgba(127,146,176,.25);
+      background:transparent; color:var(--fg); cursor:pointer; font-weight:900; letter-spacing:.2px;
       transition:transform .08s ease, box-shadow .12s ease;
     }
     .btn:hover{ transform:translateY(-1px); box-shadow:0 10px 18px rgba(0,0,0,.18); }
     .btn:focus{ outline:2px solid var(--ring); outline-offset:2px; }
 
-    /* 카카오 문의 버튼 강조 */
+    /* 카카오 문의 버튼 – 더 눈에 띄게(전체폭, 진한 글자) */
     .btn-kakao{
-      background:#fee500; color:#191600; border-color:#fee500;
-      font-size:16px; padding:16px 18px; width:100%; justify-content:center;
+      background:var(--kakao); color:var(--kakao-fg); border-color:var(--kakao);
+      font-size:16px; width:100%; justify-content:center;
+      box-shadow:0 8px 22px rgba(254,229,0,.25);
     }
 
     /* 비교표 */
     .table{
-      margin-top:28px; overflow-x:auto; background:var(--card); border-radius:var(--br);
+      margin-top:28px; overflow-x:auto; background:var(--card); border-radius:20px;
       box-shadow:var(--shadow); border:1px solid rgba(127,146,176,.18);
     }
     table{ width:100%; border-collapse:collapse; min-width:720px; }
     th,td{ text-align:left; padding:14px 16px; border-bottom:1px dashed rgba(127,146,176,.2); }
-    th{ font-size:13px; color:var(--muted); font-weight:700; }
-    td{ font-size:14px; }
+    th{ font-size:14px; color:var(--muted); font-weight:800; }
+    td{ font-size:15px; color:var(--fg-strong); }
     tr:last-child td{ border-bottom:none; }
 
     /* FAQ & 푸터 */
     .faq{ margin-top:26px; display:grid; gap:10px; }
-    details{ background:var(--card); border-radius:12px; padding:14px 16px; border:1px solid rgba(127,146,176,.18); box-shadow:var(--shadow); }
-    summary{ cursor:pointer; font-weight:800; }
+    details{ background:var(--card); border-radius:14px; padding:14px 16px; border:1px solid rgba(127,146,176,.18); box-shadow:var(--shadow); }
+    summary{ cursor:pointer; font-weight:900; color:var(--fg-strong); }
     details p{ color:var(--muted); margin:10px 2px 2px; line-height:1.55; }
 
     .footer{ margin-top:28px; color:var(--muted); font-size:12px; line-height:1.55; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between; }
@@ -123,13 +142,13 @@
 
     <!-- 가격 카드 -->
     <section class="grid" aria-label="요금제 선택">
-      <!-- 30일 플랜 (결제 버튼 제거, 카톡 문의만 표시) -->
+      <!-- 30일 -->
       <article class="card" data-plan="monthly" tabindex="0" aria-label="30일 플랜">
         <span class="badge">가장 가볍게</span>
         <div class="plan-name">30일 플랜</div>
         <div class="desc">한 달만 빠르게 처리해야 할 때 적합</div>
         <div class="price">
-          <div class="num" data-price="50000">50,000</div><div class="unit">원 / 30일</div>
+          <div class="num">50,000</div><div class="unit">원 / 30일</div>
         </div>
         <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
         <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
@@ -138,13 +157,13 @@
         </div>
       </article>
 
-      <!-- 90일 플랜 -->
-      <article class="card" data-plan="quarterly" tabindex="0" aria-label="90일 플랜(선택)">
-        <span class="badge" style="background: rgba(36,195,143,.15); color: var(--ok); border-color: rgba(36,195,143,.4);">추천</span>
+      <!-- 90일 -->
+      <article class="card" data-plan="quarterly" tabindex="0" aria-label="90일 플랜">
+        <span class="badge" style="color:#1f8f6f;background:rgba(31,143,111,.14);border-color:rgba(31,143,111,.35)">추천</span>
         <div class="plan-name">90일 플랜</div>
         <div class="desc">분기 단위 프로젝트 운영에 적합</div>
         <div class="price">
-          <div class="num" data-price="135000">135,000</div><div class="unit">원 / 90일</div>
+          <div class="num">135,000</div><div class="unit">원 / 90일</div>
         </div>
         <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
         <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
@@ -153,13 +172,13 @@
         </div>
       </article>
 
-      <!-- 1년 플랜 -->
+      <!-- 1년 -->
       <article class="card" data-plan="yearly" tabindex="0" aria-label="1년 플랜">
-        <span class="badge" style="background: rgba(43,121,255,.18); color:#fff; border-color: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);">베스트</span>
+        <span class="badge">베스트</span>
         <div class="plan-name">1년 플랜</div>
         <div class="desc">상시 운영 환경에 최적, 월 환산 시 가장 저렴</div>
         <div class="price">
-          <div class="num" data-price="300000">300,000</div><div class="unit">원 / 1년</div>
+          <div class="num">300,000</div><div class="unit">원 / 1년</div>
         </div>
         <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
         <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
@@ -200,7 +219,14 @@
         <summary>부가가치세( VAT )는 포함인가요?</summary>
         <p>표시 가격은 부가세 <strong>별도</strong> 금액입니다. 세금계산서가 필요한 경우 결제 후 사업자정보를 전달해 주세요.</p>
       </details>
-      
+      <details>
+        <summary>환불 규정은 어떻게 되나요?</summary>
+        <p>미사용(활성화 전) 상태에서는 결제일로부터 7일 이내 전액 환불됩니다. 활성화 후에는 남은 기간에 따라 일할 차감 후 환불됩니다.</p>
+      </details>
+      <details>
+        <summary>플랜 변경(업/다운그레이드)이 가능한가요?</summary>
+        <p>가능합니다. 남은 기간을 일할 계산하여 차액 결제/환불 처리합니다.</p>
+      </details>
     </section>
 
     <!-- 푸터 -->
@@ -211,12 +237,10 @@
   </div>
 
   <script>
-    // 카카오 채널/오픈채팅 URL만 여기서 설정해 주세요.
+    // 카카오 채널/오픈채팅 URL만 설정하세요.
     // 예) const KAKAO = "https://pf.kakao.com/_abcdE";
     //     const KAKAO = "https://open.kakao.com/o/xxxxxx";
     const KAKAO = "KAKAO_CHANNEL_URL";
-
-    // 모든 카카오 문의 링크에 URL 주입
     document.querySelectorAll('a.btn-kakao[href="KAKAO_CHANNEL_URL"]').forEach(a => a.href = KAKAO);
   </script>
 </body>
