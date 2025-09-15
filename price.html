@@ -8,13 +8,12 @@
     /* ===== 색상 토큰 ===== */
     :root{
       --bg:#0b1020; --card:#11162a; --muted:#9aa3b2; --fg:#f6f8ff;
-      --fg-strong:#eaf0ff;             /* 본문 대비 강화 */
+      --fg-strong:#eaf0ff;
       --accent:#2b79ff; --accent-2:#7a5cff;
       --ok:#1fc08f; --ring:rgba(43,121,255,.35);
       --br:16px; --shadow:0 10px 30px rgba(0,0,0,.35);
       --kakao:#fee500; --kakao-fg:#191600;
     }
-    /* 라이트 모드에서 가독성 극대화 */
     @media (prefers-color-scheme: light){
       :root{
         --bg:#f5f7ff; --card:#ffffff; --muted:#576072; --fg:#0b1220; --fg-strong:#0b1220;
@@ -65,7 +64,7 @@
       padding:7px 11px; border-radius:999px; color:var(--accent); background:rgba(43,121,255,.14);
       border:1px solid rgba(43,121,255,.35);
     }
-    /* 1년 플랜: 베스트 배지 눈에 띄게 */
+    /* 1년 플랜 강조 배지 */
     .card[data-plan="yearly"] .badge{
       background:linear-gradient(135deg,var(--accent),var(--accent-2));
       color:#fff; border:none;
@@ -85,18 +84,22 @@
     .cta{ display:flex; gap:10px; margin-top:10px; }
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:16px 18px; border-radius:14px; border:1px solid rgba(127,146,176,.25);
+      padding:14px 16px; border-radius:14px; border:1px solid rgba(127,146,176,.25);
       background:transparent; color:var(--fg); cursor:pointer; font-weight:900; letter-spacing:.2px;
       transition:transform .08s ease, box-shadow .12s ease;
     }
     .btn:hover{ transform:translateY(-1px); box-shadow:0 10px 18px rgba(0,0,0,.18); }
     .btn:focus{ outline:2px solid var(--ring); outline-offset:2px; }
 
-    /* 카카오 문의 버튼 – 더 눈에 띄게(전체폭, 진한 글자) */
+    /* 카카오 버튼들 */
     .btn-kakao{
       background:var(--kakao); color:var(--kakao-fg); border-color:var(--kakao);
       font-size:16px; width:100%; justify-content:center;
       box-shadow:0 8px 22px rgba(254,229,0,.25);
+    }
+    .btn-outline{
+      background:transparent; color:var(--fg-strong);
+      border:1px solid rgba(127,146,176,.35);
     }
 
     /* 비교표 */
@@ -153,7 +156,8 @@
         <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
         <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
         <div class="cta">
-          <a class="btn btn-kakao" href="KAKAO_CHANNEL_URL" target="_blank" rel="noopener">카카오톡 문의하기</a>
+          <a class="btn btn-kakao"  href="http://pf.kakao.com/_wxnkkn/chat" target="_blank" rel="noopener">카카오톡 문의하기</a>
+          <a class="btn btn-outline" href="http://pf.kakao.com/_wxnkkn"      target="_blank" rel="noopener">채널 방문</a>
         </div>
       </article>
 
@@ -168,7 +172,8 @@
         <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
         <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
         <div class="cta">
-          <a class="btn btn-kakao" href="KAKAO_CHANNEL_URL" target="_blank" rel="noopener">카카오톡 문의하기</a>
+          <a class="btn btn-kakao"  href="http://pf.kakao.com/_wxnkkn/chat" target="_blank" rel="noopener">카카오톡 문의하기</a>
+          <a class="btn btn-outline" href="http://pf.kakao.com/_wxnkkn"      target="_blank" rel="noopener">채널 방문</a>
         </div>
       </article>
 
@@ -183,7 +188,8 @@
         <div class="feature"><span class="ok"></span> 대량 처리 제한 해제</div>
         <div class="feature"><span class="ok"></span> 자동 재시작/에러 복구</div>
         <div class="cta">
-          <a class="btn btn-kakao" href="KAKAO_CHANNEL_URL" target="_blank" rel="noopener">카카오톡 문의하기</a>
+          <a class="btn btn-kakao"  href="http://pf.kakao.com/_wxnkkn/chat" target="_blank" rel="noopener">카카오톡 문의하기</a>
+          <a class="btn btn-outline" href="http://pf.kakao.com/_wxnkkn"      target="_blank" rel="noopener">채널 방문</a>
         </div>
       </article>
     </section>
@@ -235,13 +241,5 @@
       <div>ⓒ 2025 Your Company. 모든 권리 보유. | 약관 · 개인정보처리방침</div>
     </footer>
   </div>
-
-  <script>
-    // 카카오 채널/오픈채팅 URL만 설정하세요.
-    // 예) const KAKAO = "https://pf.kakao.com/_abcdE";
-    //     const KAKAO = "https://open.kakao.com/o/xxxxxx";
-    const KAKAO = "KAKAO_CHANNEL_URL";
-    document.querySelectorAll('a.btn-kakao[href="KAKAO_CHANNEL_URL"]').forEach(a => a.href = KAKAO);
-  </script>
 </body>
 </html>
